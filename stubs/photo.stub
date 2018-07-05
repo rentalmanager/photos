@@ -1,0 +1,21 @@
+<?php
+namespace DummyNamespace;
+
+use RentalManager\Photos\Models\PhotosPhoto;
+
+class DummyClass extends PhotosPhoto
+{
+     //
+     protected $fillable = [
+        'disk',
+        'is_external',
+        'external_url',
+        'path',
+        'caption',
+        'file_type',
+        'file_name',
+        'file_extension',
+        'has_thumbnails',
+        'thumbnails'
+     ];
+}
