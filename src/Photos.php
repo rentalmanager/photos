@@ -119,11 +119,13 @@ class Photos
     /**
      * Generate the unique path
      *
+     * @param $id
      * @return string
      */
-    public function generatePath()
+    public function generatePath($id = false)
     {
-        return env('APP_ENV') . '/properties/' . rand() . uniqid();
+        $id = ( $id ) ? $id : rand() . uniqid();
+        return env('APP_ENV') . '/properties/' . $id;
     }
 
     /**

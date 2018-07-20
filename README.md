@@ -27,7 +27,7 @@ You must be approved by admin into the Gitlab account so your public key needs t
 After that just simply add the following line to the composer required packages
 
 ``` json
-"rentalmanager/photos": "1.0.*"
+"rentalmanager/photos": "1.1.*"
 ```
 
 After that run the 
@@ -170,7 +170,7 @@ $photo = Photos::upload($path_to_image, 'store/there/instead');
 Or you can generate the auto path env/properties/{random}
 
 ```php
-$path = Photos::generatePath();
+$path = Photos::generatePath($id = false);
 ```
 
 Thats it folks.

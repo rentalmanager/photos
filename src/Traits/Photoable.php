@@ -143,7 +143,7 @@ trait Photoable
         }
 
         $objectType = Str::singular($relationship);
-        $object = RelationHelper::getIdFor($object, $objectType);
+        $object = RelationHelper::getIdFor($object, $objectType, 'photos');
 
         $this->$relationship()->attach(
             $object,
@@ -170,7 +170,7 @@ trait Photoable
         $objectType = Str::singular($relationship);
         $relationshipQuery = $this->$relationship();
 
-        $object = RelationHelper::getIdFor($object, $objectType);
+        $object = RelationHelper::getIdFor($object, $objectType, 'photos');
 
         $relationshipQuery->detach($object);
 
