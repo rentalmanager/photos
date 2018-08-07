@@ -11,29 +11,8 @@ This package uses Image Intervention library and league flysystem packages for R
 
 Via Composer
 
-Since this package needs to be private, first you need to add the following line to the composer.json file:
-
-``` json
-"repositories": [
-        {
-            "type": "git",
-            "url": "git@gitlab.com:rentalmanager/photos.git"
-        }
-    ]
-```
-
-You must be approved by admin into the Gitlab account so your public key needs to have an access to the above repo.
-
-After that just simply add the following line to the composer required packages
-
-``` json
-"rentalmanager/photos": "1.1.*"
-```
-
-After that run the 
-
 ``` bash
-$ composer update
+composer require rentalmanager/photos
 ```
 
 ### Configuration
