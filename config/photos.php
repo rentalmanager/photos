@@ -19,6 +19,12 @@ return [
     */
     'default_disk' => 's3',
 
+
+    /**
+     * Root path for the photos
+     */
+    'root_path' => env('PHOTOS_ROOT_PATH', 'local'),
+
     /*
     |--------------------------------------------------------------------------
     | Thumbnail sizes

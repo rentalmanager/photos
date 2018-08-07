@@ -2,7 +2,6 @@
 namespace RentalManager\Photos;
 
 use App\RentalManager\AddOns\Photo;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
@@ -125,7 +124,7 @@ class Photos
     public function generatePath($id = false)
     {
         $id = ( $id ) ? $id : rand() . uniqid();
-        return env('APP_ENV') . '/properties/' . $id;
+        return config('photos.root_path') . '/properties/' . $id;
     }
 
     /**
