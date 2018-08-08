@@ -97,6 +97,7 @@ class Photos
         // Ok now we need to add this item to the database
         $photo->disk = 's3';
         $photo->is_external = false;
+        $photo->external_url = null;
         $photo->path = $path;
         $photo->has_thumbnails = false;
         $photo->file_type = 'image/jpeg';
