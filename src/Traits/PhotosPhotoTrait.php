@@ -39,11 +39,11 @@ trait PhotosPhotoTrait
             {
                 case 'local':
 
-                    return env('APP_URL') . '/' . $this->path;
+                    return Config::get('app.url') . '/' . $this->path;
                     break;
 
                 case 's3':
-                    return env('AWS_URL') . '/' . $this->path;
+                    return Config::get('photos.storage_path') . '/' . $this->path;
                     break;
             }
         }

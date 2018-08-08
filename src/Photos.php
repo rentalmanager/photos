@@ -115,10 +115,10 @@ class Photos
      * @param $id
      * @return string
      */
-    public function generatePath($path, $id = false)
+    public function generatePath($path = null, $id = false)
     {
         $id = ( $id ) ? $id : rand() . uniqid();
-        return $path . '/properties/' . $id;
+        return Config::get('photos.root_path') . '/properties/' . $id;
     }
 
     /**
