@@ -22,13 +22,13 @@ return [
     /*
      * Where we are storing the photos
      */
-    'storage_path' => env('AWS_URL', 'https://s3-us-west-2.amazonaws.com/rentbits'),
+    'storage_path' => 'https://s3-us-west-2.amazonaws.com/rentbits',
 
 
     /**
      * Root path for the photos
      */
-    'root_path' => env('PHOTOS_ROOT_PATH', 'local'),
+    'root_path' => 'local',
 
     /*
     |--------------------------------------------------------------------------

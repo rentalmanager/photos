@@ -88,6 +88,7 @@ class Photos
         $path = $this->generatePath($path);
 
         $filename = md5( $photo->file_name ) . time();
+
         // use the image intervention to encode and orientate the image according to the Exif data
         $image = Image::make( $photo->sources['original'])->orientate()->encode('jpg');
 
@@ -133,13 +134,6 @@ class Photos
         if ( $photo->has_thumbnails )
         {
             return $photo;
-        }
-
-        // if photo is external
-        if ( $photo->is_external )
-        {
-            // upload for the first time
-            $photo = $this->upload($photo);
         }
 
         $thumbnail_sizes = null;
