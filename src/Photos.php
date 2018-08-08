@@ -1,7 +1,7 @@
 <?php
 namespace RentalManager\Photos;
 
-use App\RentalManager\AddOns\Photo;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
@@ -79,95 +79,71 @@ class Photos
     /**
      * Upload
      *
-     * @param $file
+     * @param $photo
      * @param $path
-     * @param bool $createThumbnails
      * @return mixed
      */
-    public function upload($file, $path = false, $createThumbnails = false)
+    public function upload($photo, $path = 'local')
     {
-        $path = ( !$path ) ? $this->generatePath() : $path;
+        $path = $this->generatePath($path);
 
-        // generate the unique filename
-        $filename = md5( $file ) . time();
-
+        $filename = md5( $photo->file_name ) . time();
         // use the image intervention to encode and orientate the image according to the Exif data
-        $image = Image::make($file)->orientate()->encode('jpg');
+        $image = Image::make( $photo->sources['original'])->orientate()->encode('jpg');
 
         // put into the storage
         Storage::disk('s3')->put( $path . '/' . $filename . '.jpg', $image->__toString(), 'public');
 
         // Ok now we need to add this item to the database
-        $photo = Photo::create([
-            'disk' => 's3',
-            'is_external' => false,
-            'path' => $path,
-            'has_thumbnails' => false,
-            'file_type' => 'image/jpeg',
-            'file_name' => $filename,
-            'file_extension' => 'jpg'
-        ]);
+        $photo->disk = 's3';
+        $photo->is_external = false;
+        $photo->path = $path;
+        $photo->has_thumbnails = false;
+        $photo->file_type = 'image/jpeg';
+        $photo->file_name = $filename;
+        $photo->file_extension = 'jpg';
+        $photo->save();
 
-        if ( $createThumbnails )
-        {
-            $this->generateThumbnails($photo);
-        }
         return $photo;
     }
 
     /**
      * Generate the unique path
      *
+     * @param $path
      * @param $id
      * @return string
      */
-    public function generatePath($id = false)
+    public function generatePath($path, $id = false)
     {
         $id = ( $id ) ? $id : rand() . uniqid();
-        return config('photos.root_path') . '/properties/' . $id;
+        return $path . '/properties/' . $id;
     }
 
     /**
      * Generate the thumbnails for a photo
      *
      * @param $photo
-     * @param $path
      * @return mixed
      */
-    public function generateThumbnails( $photo, $path = false)
+    public function generateThumbnails( $photo )
     {
-
-        // return if we have the thumbnails
+        // return if we have the thumbnails or is external
         if ( $photo->has_thumbnails )
         {
             return $photo;
         }
 
-        $thumbnail_sizes = null;
-
-        // first we need to change if the photo is external
+        // if photo is external
         if ( $photo->is_external )
         {
-            // generate the new unique filename
-            $filename = md5( $photo->file_name ) . time();
-            $image = Image::make( $photo->sources['original'])->orientate()->encode('jpg');
-            $path = ( !$path ) ? $this->generatePath() : $path;
-            // put into the storage
-            Storage::disk('s3')->put(  $path . '/' . $filename . '.jpg', $image->__toString(), 'public');
-            // update db
-            $photo->file_name = $filename;
-            $photo->file_extension = 'jpg';
-            $photo->file_type = 'image/jpeg';
-            $photo->path = $path;
-            $photo->is_external = false;
-            $photo->external_url = null;
-            $photo->save();
-
-        } else {
-            // take the default path
-            $path = $photo->path;
-            $filename = $photo->file_name;
+            // upload for the first time
+            $photo = $this->upload($photo);
         }
+
+        $thumbnail_sizes = null;
+        $path = $photo->path;
+        $filename = $photo->file_name;
 
         foreach ( Config::get('photos.thumbnail_sizes') as $key => $size )
         {
@@ -180,15 +156,39 @@ class Photos
             // If keep ratio
             if ( $size['keepRatio'] )
             {
-                // add callback functionality to retain maximal original image size
-                $image->$method( $size['width'], $size['height'], function( $constraint ) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                } );
+                switch ( $method )
+                {
+                    case 'fit':
+                        // add callback functionality to retain maximal original image size
+                        $image->fit( $size['width'], $size['height'], function( $constraint ) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        } );
+                        break;
+
+                    case 'resize':
+                        // add callback functionality to retain maximal original image size
+                        $image->resize( $size['width'], $size['height'], function( $constraint ) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        } );
+                        break;
+                }
+
             } else {
                 // Just do the method
-                $image->$method( $size['width'], $size['height'] );
+                switch ( $method )
+                {
+                    case 'fit':
+                        $image->fit( $size['width'], $size['height'] );
+                        break;
+
+                    case 'resize':
+                        $image->resize($size['width'], $size['height']);
+                        break;
+                }
             }
+
 
             // If we need to place the image on canvas
             if ( $size['onCanvas'] )
