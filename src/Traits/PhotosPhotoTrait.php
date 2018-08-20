@@ -60,7 +60,12 @@ trait PhotosPhotoTrait
 
         $fullPath  = $this->fullPath();
 
-        $sources['original'] = $fullPath . '/' . $this->file_name . '.' . $this->file_extension;
+        if ( $this->file_extension != null )
+        {
+            $sources['original'] = $fullPath . '/' . $this->file_name . '.' . $this->file_extension;
+        } else {
+            $sources['original'] = $fullPath . '/' . $this->file_name;
+        }
 
         if ( $this->has_thumbnails )
         {
