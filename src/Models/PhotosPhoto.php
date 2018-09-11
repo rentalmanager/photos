@@ -2,8 +2,7 @@
 namespace RentalManager\Photos\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Config;
-use RentalManager\Photos\Traits\PhotosPhotoTrait;
+use RentalManager\Photos\Traits\RMPhotoTrait;
 
 
 /**
@@ -14,10 +13,10 @@ use RentalManager\Photos\Traits\PhotosPhotoTrait;
  * @author Goran Krgovic <goran@dashlocal.com>
  */
 
-class PhotosPhoto extends Model
+class RMPhoto extends Model
 {
 
-    use PhotosPhotoTrait;
+    use RMPhotoTrait;
 
     /**
      * The database table used by the model.
@@ -35,6 +34,6 @@ class PhotosPhoto extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = Config::get('photos.tables.photos');
+        $this->table = 'photos';
     }
 }

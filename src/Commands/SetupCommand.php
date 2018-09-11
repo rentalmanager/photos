@@ -19,7 +19,7 @@ class SetupCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Setup models and migrations.';
+    protected $description = 'Setup models and add the traits.';
 
 
     /**
@@ -28,8 +28,8 @@ class SetupCommand extends Command
      * @var array
      */
     protected $calls = [
-        'rm:migrate-photos' => 'Migrate the tables',
-        'rm:photo' => 'Setup the model',
+        'rm:model-photo' => 'Setup the model',
+        'rm:add-photoable-trait' => 'Add the traits'
     ];
 
     /**

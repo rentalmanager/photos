@@ -1,9 +1,9 @@
 <?php
 namespace DummyNamespace;
 
-use RentalManager\Photos\Models\PhotosPhoto;
+use RentalManager\Photos\Models\RMPhoto;
 
-class DummyClass extends PhotosPhoto
+class DummyClass extends RMPhoto
 {
      //
      protected $fillable = [

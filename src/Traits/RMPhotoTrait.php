@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Config;
  * @author Goran Krgovic <goran@dashlocal.com>
  */
 
-trait PhotosPhotoTrait
+trait RMPhotoTrait
 {
 
     /**
@@ -98,47 +98,6 @@ trait PhotosPhotoTrait
     public function getThumbnailsAttribute($value)
     {
         return ( $value ) ? json_decode( $value, true ) : null;
-    }
-
-
-
-    /**
-     * Return the associated properties for this item
-     *
-     * @return mixed
-     */
-    public function associatedProperties()
-    {
-        return $this->getMorphByRelation('property');
-    }
-
-
-    /**
-     * Return the associated units for this item
-     *
-     * @return mixed
-     */
-    public function associatedUnits()
-    {
-        return $this->getMorphByRelation('unit');
-    }
-
-
-
-    /**
-     * Morphed by many
-     * @param $relationship
-     * @return mixed
-     */
-    public function getMorphByRelation($relationship)
-    {
-        return $this->morphedByMany(
-            Config::get('base.models')[$relationship],
-            'node',
-            Config::get('photos.tables.photo_nodes'),
-            Config::get('photos.foreign_keys.photo'),
-            'node_id'
-        );
     }
 
     /**

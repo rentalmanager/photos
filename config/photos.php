@@ -88,59 +88,6 @@ return [
             'height' => 200,
             'filter' => false
         ]
-    ],
-
-
-    /*
-      |--------------------------------------------------------------------------
-      | Models
-      |--------------------------------------------------------------------------
-      |
-      | These are the models to define the tables
-      | If you want the models to be in a different namespace or
-      | to have a different name, you can do it here.
-      |
-      */
-    'models' => [
-        /**
-         * Photo model
-         */
-        'photo' => 'App\RentalManager\AddOns\Photo'
-    ],
-
-    /*
-     |--------------------------------------------------------------------------
-     | Tables
-     |--------------------------------------------------------------------------
-     |
-     | These are the tables to store all the necessary data.
-     |
-     */
-    'tables' => [
-        /**
-         *  Photos table
-         */
-        'photos' => 'photos',
-        /**
-         * Intermediate table
-         */
-        'photo_nodes' => 'photo_nodes'
-    ],
-
-    /*
-  |--------------------------------------------------------------------------
-  | Foreign Keys
-  |--------------------------------------------------------------------------
-  |
-  | These are the foreign keys used by propeller in the intermediate tables.
-  |
-  */
-    'foreign_keys' => [
-        /**
-         * Photo foreign key
-         */
-        'photo' => 'photo_id'
     ]
-
 
 ];

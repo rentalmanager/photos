@@ -6,7 +6,6 @@ use RentalManager\Photos\Traits\Photoable;
 use Traitor\Traitor;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Config;
 
 /**
  * Created by PhpStorm.
@@ -83,8 +82,8 @@ class AddPhotoableTraitCommand extends Command
     protected function getModels()
     {
         return new Collection([
-            Config::get('base.models.property'),
-            Config::get('base.models.unit')
+            'App\RentalManager\Main\Property',
+            'App\RentalManager\Main\Unit'
         ]);
     }
 

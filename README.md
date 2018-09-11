@@ -40,12 +40,6 @@ you can just simply run the
 $ php artisan rm:setup-photos
 ```
 
-We assume you have already installed the Base package, so then just add traits automagically
-
-```bash
-$ php artisan rm:add-photoable-trait
-```
-
 Thats it...
 
 ## Usage

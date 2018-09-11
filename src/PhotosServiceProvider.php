@@ -27,7 +27,6 @@ class PhotosServiceProvider extends ServiceProvider
      * @var array
      */
     protected $commands = [
-        'Migration' => 'command.photos.migration',
         'MakePhoto' => 'command.photos.photo',
         'Setup' => 'command.photos.setup',
         'AddPhotoableTrait' => 'command.photos.add-photoable-trait'
@@ -47,6 +46,8 @@ class PhotosServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/photos.php' => config_path('photos.php')
         ], 'photos');
+
+        $this->loadMigrationsFrom(__DIR__.'/../migrations');
     }
 
 
@@ -90,13 +91,6 @@ class PhotosServiceProvider extends ServiceProvider
             call_user_func_array([$this, $method], []);
         }
         $this->commands(array_values($this->commands));
-    }
-
-    protected function registerMigrationCommand()
-    {
-        $this->app->singleton('command.photos.migration', function () {
-            return new \RentalManager\Photos\Commands\MigrationCommand();
-        });
     }
 
     protected function registerSetupCommand()

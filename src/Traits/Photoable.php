@@ -1,11 +1,6 @@
 <?php
 namespace RentalManager\Photos\Traits;
 
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Str;
-use RentalManager\RelationHelper\Facades\RelationHelper;
-use InvalidArgumentException;
-
 /**
  * Created by PhpStorm.
  * Date: 7/4/18
@@ -102,7 +97,7 @@ trait Photoable
      */
     public function getOrderedPhotos()
     {
-        return $this->photos()->orderBy( Config::get('photos.tables.photo_nodes') . '.ordering', 'asc')->get();
+        return $this->photos()->orderBy(  'photo_node.ordering', 'asc')->get();
     }
 
     // RELATIONS
@@ -116,11 +111,11 @@ trait Photoable
     public function photos()
     {
         return $this->morphToMany(
-            Config::get('photos.models.photo'), // model
+            'App\RentalManager\AddOns\Photo', // model
             'node', // node
-            Config::get('photos.tables.photo_nodes'), // table
+            'photo_node', // table
             'node_id',
-            Config::get('photos.foreign_keys.photo')
+            'photo_id'
         );
     }
 
@@ -137,14 +132,6 @@ trait Photoable
      */
     private function attachPhotoableModel($relationship, $object, $attributes = [])
     {
-        if ( !RelationHelper::isValidRelationship($relationship) )
-        {
-            throw new InvalidArgumentException;
-        }
-
-        $objectType = Str::singular($relationship);
-        $object = RelationHelper::getIdFor($object, $objectType, 'photos');
-
         $this->$relationship()->attach(
             $object,
             $attributes
@@ -162,16 +149,7 @@ trait Photoable
      */
     private function detachPhotoableModel($relationship, $object)
     {
-        if ( !RelationHelper::isValidRelationship($relationship) )
-        {
-            throw new InvalidArgumentException;
-        }
-
-        $objectType = Str::singular($relationship);
         $relationshipQuery = $this->$relationship();
-
-        $object = RelationHelper::getIdFor($object, $objectType, 'photos');
-
         $relationshipQuery->detach($object);
 
         return $this;

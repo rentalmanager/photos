@@ -12,7 +12,7 @@ class MakePhotoCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'rm:photo';
+    protected $name = 'rm:model-photo';
 
     /**
      * The console command description.
@@ -46,7 +46,7 @@ class MakePhotoCommand extends GeneratorCommand
      */
     protected function getNameInput()
     {
-        return Config::get('photos.models.photo', 'Photo');
+        return 'App\RentalManager\AddOns\Photo';
     }
 
     /**
